@@ -1,4 +1,4 @@
-# A+D NULL BIND
+# A+D Null Bind
 
 Stops any input overlap between A and D
 
