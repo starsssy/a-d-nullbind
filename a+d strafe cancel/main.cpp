@@ -1,5 +1,8 @@
 #include <Windows.h>
 #include <iostream>
+#include <tray.hpp>
+
+#include "icon_bytes.h"
 
 bool KeyUp(int key)
 {
@@ -26,11 +29,12 @@ bool KeyDown(int key)
 bool adown = false;
 bool ddown = false;
 bool close = false;
+bool enabled = true;
 
 HHOOK keyboard_hook;
 LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    if (nCode == HC_ACTION && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN || wParam == WM_KEYUP || wParam == WM_SYSKEYUP) && ((KBDLLHOOKSTRUCT*)lParam)->time != 123)
+    if (nCode == HC_ACTION && enabled && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN || wParam == WM_KEYUP || wParam == WM_SYSKEYUP) && ((KBDLLHOOKSTRUCT*)lParam)->time != 123)
     {
         bool down = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN);
 
@@ -87,9 +91,9 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
     return CallNextHookEx(keyboard_hook, nCode, wParam, lParam);
 }
 
-int main()
+int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-#if 1
+#if 0
     AllocConsole();
     freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
     SetConsoleTitleA("A+D Null bind");
@@ -97,7 +101,22 @@ int main()
 
     keyboard_hook = SetWindowsHookEx(WH_KEYBOARD_LL, LLKeyboardProc, NULL, 0);
     if (keyboard_hook == NULL)
+    {
+        printf("Failed to create keyboard hook!\n");
         return 0;
+    }
+
+    HICON icon = CreateIconFromResourceEx(icon_bytes, sizeof(icon_bytes), TRUE, 0x30000, 22, 22, LR_DEFAULTCOLOR);
+    if (!icon)
+    {
+        printf("Failed to create icon!\n");
+        return 0;
+    }
+
+    Tray::Tray tray("Null Bind", icon);
+
+    tray.addEntry(Tray::Toggle("Enable", enabled, [&](bool asd) { enabled = asd; }));
+    tray.addEntry(Tray::Button("Exit (END Key)", [&] { close = true; }));
 
     MSG msg;
     ZeroMemory(&msg, sizeof(msg));
@@ -111,6 +130,8 @@ int main()
         }
     }
 
+    tray.exit();
     UnhookWindowsHookEx(keyboard_hook);
+
     return 0;
 }

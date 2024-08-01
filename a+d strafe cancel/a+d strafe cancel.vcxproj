@@ -43,14 +43,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>tray\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>tray\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -102,11 +108,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -116,18 +124,49 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tray\src\components\button.cpp" />
+    <ClCompile Include="tray\src\components\imagebutton.cpp" />
+    <ClCompile Include="tray\src\components\label.cpp" />
+    <ClCompile Include="tray\src\components\separator.cpp" />
+    <ClCompile Include="tray\src\components\submenu.cpp" />
+    <ClCompile Include="tray\src\components\syncedtoggle.cpp" />
+    <ClCompile Include="tray\src\components\toggle.cpp" />
+    <ClCompile Include="tray\src\core\entry.cpp" />
+    <ClCompile Include="tray\src\core\traybase.cpp" />
+    <ClCompile Include="tray\src\core\windows\icon.cpp" />
+    <ClCompile Include="tray\src\core\windows\image.cpp" />
+    <ClCompile Include="tray\src\core\windows\tray.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="icon_bytes.h" />
+    <ClInclude Include="tray\include\components\button.hpp" />
+    <ClInclude Include="tray\include\components\imagebutton.hpp" />
+    <ClInclude Include="tray\include\components\label.hpp" />
+    <ClInclude Include="tray\include\components\separator.hpp" />
+    <ClInclude Include="tray\include\components\submenu.hpp" />
+    <ClInclude Include="tray\include\components\syncedtoggle.hpp" />
+    <ClInclude Include="tray\include\components\toggle.hpp" />
+    <ClInclude Include="tray\include\core\entry.hpp" />
+    <ClInclude Include="tray\include\core\icon.hpp" />
+    <ClInclude Include="tray\include\core\image.hpp" />
+    <ClInclude Include="tray\include\core\linux\tray.hpp" />
+    <ClInclude Include="tray\include\core\traybase.hpp" />
+    <ClInclude Include="tray\include\core\windows\tray.hpp" />
+    <ClInclude Include="tray\include\tray.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
