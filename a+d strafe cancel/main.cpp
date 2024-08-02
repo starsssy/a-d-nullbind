@@ -106,7 +106,7 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         return 0;
     }
 
-    HICON icon = CreateIconFromResourceEx(icon_bytes, sizeof(icon_bytes), TRUE, 0x30000, 22, 22, LR_DEFAULTCOLOR);
+    HICON icon = CreateIconFromResourceEx(icon_bytes, sizeof(icon_bytes), TRUE, 0x30000, 32, 32, LR_DEFAULTCOLOR);
     if (!icon)
     {
         printf("Failed to create icon!\n");
